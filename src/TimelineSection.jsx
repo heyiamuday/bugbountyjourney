@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import JunMayImg from './assets/Jun-May.png'
+import JulDecImg from './assets/Jul-Dec.png'
 
 const TRACKS = [
     {
@@ -7,7 +9,7 @@ const TRACKS = [
         label: 'Jun 2024 – May 2025 (12 Months)',
         badge: 'Phase 1',
         images: [
-            { src: '/365-days-journey/Jun-May.png', caption: 'Jun 2024 – May 2025 · The Full Year' },
+            { src: JunMayImg, caption: 'Jun 2024 – May 2025 · The Full Year' },
         ],
     },
     {
@@ -15,7 +17,7 @@ const TRACKS = [
         label: 'Jun 2025 – Dec 2025 (6 Months)',
         badge: 'Phase 2',
         images: [
-            { src: '/365-days-journey/Jul-Dec.png', caption: 'Jun 2025 – Dec 2025 · Final Sprint' },
+            { src: JulDecImg, caption: 'Jun 2025 – Dec 2025 · Final Sprint' },
         ],
     },
 ]

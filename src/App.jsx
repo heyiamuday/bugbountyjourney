@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Lenis from 'lenis';
 import HeroSection from './HeroSection';
 import TimelineSection from './TimelineSection';
 import TweetsSection from './TweetsSection';
@@ -50,6 +51,19 @@ const Navbar = () => (
 );
 
 export default function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      autoRaf: true,
+      duration: 1.2,
+    });
+    lenis.stop();
+    lenis.start();
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <div className="app-container">
       <HeroSection />

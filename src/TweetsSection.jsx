@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import FirstDayChallengeImg from './assets/FirstDayChallenge.png'
+import LastDayChallengeImg from './assets/LastDayChallenge.png'
 
 const TWEETS = [
     {
@@ -7,7 +9,7 @@ const TWEETS = [
         badge: 'Day 1',
         title: 'First Day',
         subtitle: 'June 14, 2024 — The journey begins',
-        img: '/365-days-journey/FirstDayChallenge.png',
+        img: FirstDayChallengeImg,
         link: 'https://x.com/heyiamuday/status/1801683923203989836',
         accentClass: 'first',
     },
@@ -16,7 +18,7 @@ const TWEETS = [
         badge: 'Day 365',
         title: 'Last Day',
         subtitle: 'July 7, 2025 — Mission complete',
-        img: '/365-days-journey/LastDayChallenge.png',
+        img: LastDayChallengeImg,
         link: 'https://x.com/heyiamuday/status/1946313517151518944',
         accentClass: 'last',
     },
