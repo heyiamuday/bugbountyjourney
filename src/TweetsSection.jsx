@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import FirstDayChallengeImg from './assets/FirstDayChallenge.png'
 import LastDayChallengeImg from './assets/LastDayChallenge.png'
+import ShapeBlur from './ShapeBlur'
 
 const TWEETS = [
     {
@@ -50,8 +51,12 @@ export default function TweetsSection() {
                             animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
                             transition={{ delay: i * 0.18, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                             whileHover={{ y: -6 }}
+                            style={{ position: 'relative', overflow: 'hidden' }}
                         >
-                            <div className="glow-card-content">
+                            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+                                <ShapeBlur variation={0} pixelRatioProp={window.devicePixelRatio || 1} shapeSize={1.2} roundness={0.15} borderSize={0.05} circleSize={0.25} circleEdge={1.3} />
+                            </div>
+                            <div className="glow-card-content" style={{ position: 'relative', zIndex: 1 }}>
                                 <span className={`tweet-badge ${tweet.accentClass}`}>{tweet.badge}</span>
                                 <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 6 }}>
                                     {tweet.title}

@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import ShapeBlur from './ShapeBlur'
 
 const MILESTONES = [
     'Read 2,500+ HackerOne reports',
@@ -71,8 +72,12 @@ function AchCard({ children, delay, title, icon, sage }) {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -4, boxShadow: sage ? '0 0 24px rgba(167,243,208,0.15)' : '0 0 24px rgba(99,102,241,0.2)' }}
+            style={{ position: 'relative', overflow: 'hidden' }}
         >
-            <div className="glow-card-content">
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+                <ShapeBlur variation={0} pixelRatioProp={window.devicePixelRatio || 1} shapeSize={1} roundness={0.05} borderSize={0.02} circleSize={0.25} circleEdge={1} />
+            </div>
+            <div className="glow-card-content" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="ach-card-title" style={{ color: sage ? 'var(--sage)' : 'var(--google-blue)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.2rem', fontWeight: 500, marginBottom: '16px' }}>
                     {icon}
                     {title}
@@ -177,9 +182,12 @@ export default function AchievementsSection() {
                     viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.6, delay: 0.1 }}
                     className="glow-card"
-                    style={{ marginTop: 24 }}
+                    style={{ marginTop: 24, position: 'relative', overflow: 'hidden' }}
                 >
-                    <div className="glow-card-content">
+                    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+                        <ShapeBlur variation={0} pixelRatioProp={window.devicePixelRatio || 1} shapeSize={1} roundness={0.05} borderSize={0.02} circleSize={0.25} circleEdge={1} />
+                    </div>
+                    <div className="glow-card-content" style={{ position: 'relative', zIndex: 1 }}>
                         <div className="ach-card-title" style={{ color: 'var(--google-blue)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.2rem', fontWeight: 500, marginBottom: '16px' }}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 20, height: 20 }}>
                                 <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />

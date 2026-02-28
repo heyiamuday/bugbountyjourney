@@ -1,5 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import ShapeBlur from './ShapeBlur'
 
 export default function CTASection() {
     const ref = useRef(null)
@@ -13,8 +14,12 @@ export default function CTASection() {
                     initial={{ opacity: 0, y: 60, scale: 0.95 }}
                     animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ position: 'relative', overflow: 'hidden' }}
                 >
-                    <div className="glow-card-content" style={{ alignItems: 'center', textAlign: 'center', padding: '60px 40px' }}>
+                    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+                        <ShapeBlur variation={0} pixelRatioProp={window.devicePixelRatio || 1} shapeSize={1} roundness={0.05} borderSize={0.02} circleSize={0.25} circleEdge={1} />
+                    </div>
+                    <div className="glow-card-content" style={{ alignItems: 'center', textAlign: 'center', padding: '60px 40px', position: 'relative', zIndex: 1 }}>
                         <div className="section-badge" style={{ position: 'relative', zIndex: 1, marginBottom: '24px' }}>What's Next</div>
 
                         <h2 className="cta-title" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 500, letterSpacing: '-0.02em', marginBottom: '16px' }}>

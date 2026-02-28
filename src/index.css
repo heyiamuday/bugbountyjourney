@@ -173,27 +173,11 @@ h1 {
   flex-direction: column;
 }
 
-.glow-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(transparent,
-      transparent,
-      transparent,
-      var(--google-blue),
-      var(--google-red),
-      var(--google-yellow),
-      var(--google-green),
-      transparent);
-  animation: glow-rotate 4s linear infinite;
-  z-index: 0;
-}
+
 
 .glow-card-content {
-  background-color: #000103;
+  background-color: rgba(0, 1, 3, 0.6);
+  backdrop-filter: blur(10px);
   border-radius: 18px;
   padding: 30px;
   flex: 1;

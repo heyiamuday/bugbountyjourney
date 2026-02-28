@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import ShapeBlur from './ShapeBlur'
 
 const MISTAKES = [
     {
@@ -55,9 +56,13 @@ function ShimmerCard({ data, delay, isLesson }) {
             whileHover={{ y: -5 }}
             style={isLesson ? {
                 borderColor: 'var(--google-green)',
-            } : {}}
+                position: 'relative', overflow: 'hidden'
+            } : { position: 'relative', overflow: 'hidden' }}
         >
-            <div className="glow-card-content">
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+                <ShapeBlur variation={0} pixelRatioProp={window.devicePixelRatio || 1} shapeSize={1} roundness={0.05} borderSize={0.02} circleSize={0.25} circleEdge={1} />
+            </div>
+            <div className="glow-card-content" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="mistake-icon" style={{ fontSize: '2rem', marginBottom: '12px' }}>{data.icon}</div>
                 <div className="mistake-title" style={{ color: isLesson ? 'var(--google-green)' : 'var(--google-blue)', fontSize: '1.2rem', fontWeight: 500, marginBottom: '8px' }}>
                     {data.title}
