@@ -140,7 +140,7 @@ const ShapeBlur = ({
     circleEdge = 0.5
 }) => {
     const mountRef = useRef();
-    const inView = useInView(mountRef, { margin: "100px" });
+    const inView = useInView(mountRef, { margin: "0px", amount: 0.8 });
 
     useEffect(() => {
         if (!inView) return;
