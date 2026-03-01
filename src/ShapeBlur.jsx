@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { useInView } from 'framer-motion';
 import * as THREE from 'three';
 
 const vertexShader = /* glsl */ `
@@ -139,12 +140,15 @@ const ShapeBlur = ({
     circleEdge = 0.5
 }) => {
     const mountRef = useRef();
+    const inView = useInView(mountRef, { margin: "100px" });
 
     useEffect(() => {
+        if (!inView) return;
+
         const mount = mountRef.current;
         let animationFrameId;
         let time = 0,
-            lastTime = 0;
+            lastTime = performance.now() * 0.001;
 
         const vMouse = new THREE.Vector2();
         const vMouseDamp = new THREE.Vector2();
@@ -157,7 +161,11 @@ const ShapeBlur = ({
         const camera = new THREE.OrthographicCamera();
         camera.position.z = 1;
 
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        const renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+            powerPreference: "high-performance"
+        });
         renderer.setClearColor(0x000000, 0);
         mount.appendChild(renderer.domElement);
 
@@ -187,17 +195,17 @@ const ShapeBlur = ({
             vMouse.set(e.clientX - rect.left, e.clientY - rect.top);
         };
 
-        document.addEventListener('mousemove', onPointerMove);
-        document.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('mousemove', onPointerMove);
+        window.addEventListener('pointermove', onPointerMove);
 
         const resize = () => {
-            const container = mountRef.current;
-            w = container.clientWidth;
-            h = container.clientHeight;
+            if (!mount) return;
+            w = mount.clientWidth;
+            h = mount.clientHeight;
             const dpr = Math.min(window.devicePixelRatio, 2);
 
+            renderer.getPixelRatio() !== dpr && renderer.setPixelRatio(dpr);
             renderer.setSize(w, h);
-            renderer.setPixelRatio(dpr);
 
             camera.left = -w / 2;
             camera.right = w / 2;
@@ -214,16 +222,15 @@ const ShapeBlur = ({
         window.addEventListener('resize', resize);
 
         const ro = new ResizeObserver(() => resize());
-        if (mountRef.current) ro.observe(mountRef.current);
+        ro.observe(mount);
 
         const update = () => {
             time = performance.now() * 0.001;
             const dt = time - lastTime;
             lastTime = time;
 
-            ['x', 'y'].forEach(k => {
-                vMouseDamp[k] = THREE.MathUtils.damp(vMouseDamp[k], vMouse[k], 8, dt);
-            });
+            vMouseDamp.x = THREE.MathUtils.damp(vMouseDamp.x, vMouse.x, 8, dt);
+            vMouseDamp.y = THREE.MathUtils.damp(vMouseDamp.y, vMouse.y, 8, dt);
 
             renderer.render(scene, camera);
             animationFrameId = requestAnimationFrame(update);
@@ -233,13 +240,17 @@ const ShapeBlur = ({
         return () => {
             cancelAnimationFrame(animationFrameId);
             window.removeEventListener('resize', resize);
-            if (ro) ro.disconnect();
-            document.removeEventListener('mousemove', onPointerMove);
-            document.removeEventListener('pointermove', onPointerMove);
-            mount.removeChild(renderer.domElement);
+            ro.disconnect();
+            window.removeEventListener('mousemove', onPointerMove);
+            window.removeEventListener('pointermove', onPointerMove);
+            if (mount && renderer.domElement.parentNode === mount) {
+                mount.removeChild(renderer.domElement);
+            }
             renderer.dispose();
+            material.dispose();
+            geo.dispose();
         };
-    }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
+    }, [inView, variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 
     return <div className={className} ref={mountRef} style={{ width: '100%', height: '100%' }} />;
 };
